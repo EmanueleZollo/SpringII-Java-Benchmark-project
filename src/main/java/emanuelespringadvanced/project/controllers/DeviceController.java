@@ -19,7 +19,7 @@ public class DeviceController {
     public List<Device> deviceList(){
         return deviceService.getDeviceList();
     }
-    
+
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public Device saveDevice(@RequestBody Device body) {

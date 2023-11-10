@@ -19,7 +19,7 @@ public class UserService {
         return body;
     };
 
-    public List<User> getDeviceList() {
+    public List<User> getUserList() {
         return userList;
     }
 
