@@ -19,8 +19,8 @@ public class User{
     private String name;
     private String surname;
     private String mail;
-
     @OneToMany(mappedBy = "user")
     @Nullable
     private List<Device> devices;
+    private String avatar;
 }

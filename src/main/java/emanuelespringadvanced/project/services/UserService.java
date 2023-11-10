@@ -1,17 +1,21 @@
 package emanuelespringadvanced.project.services;
-
-import emanuelespringadvanced.project.entities.Device;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import emanuelespringadvanced.project.entities.User;
-import emanuelespringadvanced.project.exceptions.NotFoundException;
 import emanuelespringadvanced.project.exceptions.UserNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
 @Service
 public class UserService {
+
+    @Autowired
+    private Cloudinary cloudinary;
     List<User> userList = new ArrayList<>();
 
     public User save(User body){
@@ -54,10 +58,11 @@ public class UserService {
             if (user.getUsername().equals(username)) {
                 selectedUser = user;
                 selectedUser.setUsername(username);
-                selectedUser.setName(selectedUser.getName());
-                selectedUser.setSurname(selectedUser.getSurname());
-                selectedUser.setMail(selectedUser.getMail());
-                selectedUser.setDevices(selectedUser.getDevices());
+                selectedUser.setName(body.getName());
+                selectedUser.setSurname(body.getSurname());
+                selectedUser.setMail(body.getMail());
+                selectedUser.setDevices(body.getDevices());
+                selectedUser.setAvatar("http://ui-avatars.com/api/?name="+body.getName() +  "+" + body.getSurname());
             }
         }
         if(selectedUser == null ){
@@ -66,4 +71,9 @@ public class UserService {
             return selectedUser;
         }
     }
+
+    public String uploadPicture(MultipartFile file) throws IOException {
+        return (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
+    }
+
 }
